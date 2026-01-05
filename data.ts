@@ -359,9 +359,9 @@ export const sampleStudioProjects: StudioProject[] = [
         { id: 'folder-orch-3', name: '03_레퍼런스', projectId: 'proj2', createdAt: '2025-11-15T10:00:00Z', color: 'green', icon: '📚' }
       ],
       messages: [
-        { id: 'msg-orch-1', author: users.user5, content: '스트링 섹션 믹스 완료했습니다. 확인 부탁드려요!', timestamp: '2025-11-24T15:00:00Z' },
-        { id: 'msg-orch-2', author: users.user1, content: '좋네요! 브라스 파트는 내일까지 올릴게요.', timestamp: '2025-11-24T16:30:00Z' },
-        { id: 'msg-orch-3', author: users.user4, content: '앰비언스 레이어 추가했어요. 공간감이 더 살아난 것 같아요.', timestamp: '2025-11-25T10:00:00Z' }
+        { id: 'msg-orch-1', user: users.user5, text: '스트링 섹션 믹스 완료했습니다. 확인 부탁드려요!', createdAt: '2025-11-24T15:00:00Z' },
+        { id: 'msg-orch-2', user: users.user1, text: '좋네요! 브라스 파트는 내일까지 올릴게요.', createdAt: '2025-11-24T16:30:00Z' },
+        { id: 'msg-orch-3', user: users.user4, text: '앰비언스 레이어 추가했어요. 공간감이 더 살아난 것 같아요.', createdAt: '2025-11-25T10:00:00Z' }
       ],
       feedbacks: [
         { id: 'fb-orch-1', fileId: 'file-orch-1', author: users.user1, content: '2분 30초 부분에서 브라스가 스트링을 너무 덮는 것 같아요. 조금 줄여볼까요?', startTime: 150, category: 'mixing', status: 'in-progress', createdAt: '2025-11-25T09:00:00Z' }
@@ -401,10 +401,10 @@ export const sampleStudioProjects: StudioProject[] = [
         { id: 'folder-lofi-2', name: '02_레퍼런스', projectId: 'proj3', createdAt: '2025-11-20T10:00:00Z', color: 'teal', icon: '🎧' }
       ],
       messages: [
-        { id: 'msg-lofi-1', author: users.user2, content: '안녕하세요! 로파이 잼 프로젝트에 오신 걸 환영해요 ☕', timestamp: '2025-11-22T10:00:00Z' },
-        { id: 'msg-lofi-2', author: users.user4, content: '패드 작업 시작할게요. 어떤 분위기가 좋을까요?', timestamp: '2025-11-23T14:00:00Z' },
-        { id: 'msg-lofi-3', author: users.user2, content: '비 오는 밤 카페 느낌으로 가면 좋을 것 같아요!', timestamp: '2025-11-23T14:30:00Z' },
-        { id: 'msg-lofi-4', author: users.user3, content: '저도 참여하고 싶어요! 보컬 찹 담당할게요~', timestamp: '2025-11-24T09:00:00Z' }
+        { id: 'msg-lofi-1', user: users.user2, text: '안녕하세요! 로파이 잼 프로젝트에 오신 걸 환영해요 ☕', createdAt: '2025-11-22T10:00:00Z' },
+        { id: 'msg-lofi-2', user: users.user4, text: '패드 작업 시작할게요. 어떤 분위기가 좋을까요?', createdAt: '2025-11-23T14:00:00Z' },
+        { id: 'msg-lofi-3', user: users.user2, text: '비 오는 밤 카페 느낌으로 가면 좋을 것 같아요!', createdAt: '2025-11-23T14:30:00Z' },
+        { id: 'msg-lofi-4', user: users.user3, text: '저도 참여하고 싶어요! 보컬 찹 담당할게요~', createdAt: '2025-11-24T09:00:00Z' }
       ],
       feedbacks: [
         {
@@ -468,9 +468,9 @@ export const sampleStudioProjects: StudioProject[] = [
         { id: 'folder-master-3', name: '03_최종배포', projectId: 'proj4', createdAt: '2025-11-01T10:00:00Z', color: 'green', icon: '🚀' }
       ],
       messages: [
-        { id: 'msg-master-1', author: users.user1, content: '전체 12트랙 마스터링 완료했습니다!', timestamp: '2025-11-10T08:30:00Z' },
-        { id: 'msg-master-2', author: users.user5, content: 'QC 체크 끝났어요. 모든 트랙 레벨 일관성 확인했습니다. 완벽해요!', timestamp: '2025-11-10T10:00:00Z' },
-        { id: 'msg-master-3', author: users.user1, content: '수고하셨습니다! 배포 준비 완료네요 🎉', timestamp: '2025-11-10T10:30:00Z' }
+        { id: 'msg-master-1', user: users.user1, text: '전체 12트랙 마스터링 완료했습니다!', createdAt: '2025-11-10T08:30:00Z' },
+        { id: 'msg-master-2', user: users.user5, text: 'QC 체크 끝났어요. 모든 트랙 레벨 일관성 확인했습니다. 완벽해요!', createdAt: '2025-11-10T10:00:00Z' },
+        { id: 'msg-master-3', user: users.user1, text: '수고하셨습니다! 배포 준비 완료네요 🎉', createdAt: '2025-11-10T10:30:00Z' }
       ],
       feedbacks: [
         {
