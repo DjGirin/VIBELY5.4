@@ -206,7 +206,11 @@ const App: React.FC = () => {
       case 'friends':
         return <FriendsPage />;
       case 'music':
-        return <MusicPage />;
+        return <MusicPage
+                  onPlayTrack={handleSetTrack}
+                  currentTrack={currentTrack}
+                  isPlaying={isPlaying}
+                />;
       case 'messages':
         return <MessagesPage currentUser={users.user1} />;
       case 'profile':

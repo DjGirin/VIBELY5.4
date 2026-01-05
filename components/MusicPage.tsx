@@ -1,8 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { mediaItems as allMedia, users, posts } from '../data';
 import { Media, User } from '../types';
 import LazyImage from './LazyImage';
 import { PlayIcon, PauseIcon, HeartIcon, MoreVerticalIcon, ChevronDownIcon } from './icons';
+
+// ID 기반 결정적 해시로 안정적인 재생수 생성
+const generateStablePlayCount = (id: string): number => {
+  let hash = 0;
+  for (let i = 0; i < id.length; i++) {
+    const char = id.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash = hash & hash;
+  }
+  return Math.abs(hash % 900000) + 100000; // 100,000 ~ 1,000,000
+};
 
 // 시간 포맷
 const formatDuration = (seconds?: number): string => {
@@ -28,8 +39,8 @@ const MusicListItem: React.FC<{
   onPlay: () => void;
 }> = ({ media, rank, isPlaying, onPlay }) => {
   const [isLiked, setIsLiked] = useState(false);
-  // 더미 재생수
-  const playCount = Math.floor(Math.random() * 1000000) + 10000;
+  // ID 기반 안정적인 재생수 (렌더시마다 변경되지 않음)
+  const playCount = useMemo(() => generateStablePlayCount(media.id), [media.id]);
 
   return (
     <div
@@ -130,12 +141,26 @@ const GenreCard: React.FC<{ genre: string; color: string; onClick: () => void }>
   </button>
 );
 
-const MusicPage: React.FC = () => {
+interface MusicPageProps {
+  onPlayTrack?: (media: Media) => void;
+  currentTrack?: Media | null;
+  isPlaying?: boolean;
+}
+
+const MusicPage: React.FC<MusicPageProps> = ({ onPlayTrack, currentTrack, isPlaying: globalIsPlaying }) => {
   const [activeTab, setActiveTab] = useState<'home' | 'charts' | 'explore'>('home');
-  const [currentPlayingId, setCurrentPlayingId] = useState<string | null>(null);
+  // 글로벌 재생 상태 사용, fallback으로 로컬 상태
+  const currentPlayingId = currentTrack?.id ?? null;
 
   const media = Object.values(allMedia).filter(m => (m as Media).mediaType === 'audio') as Media[];
   const usersList = Object.values(users) as User[];
+
+  // 트랙 재생 핸들러
+  const handlePlayTrack = (item: Media) => {
+    if (onPlayTrack) {
+      onPlayTrack(item);
+    }
+  };
 
   const genres = [
     { name: '로파이', color: 'bg-gradient-to-br from-purple-500 to-pink-500' },
@@ -204,7 +229,7 @@ const MusicPage: React.FC = () => {
                 <QuickPickCard
                   key={item.id}
                   media={item}
-                  onPlay={() => setCurrentPlayingId(item.id)}
+                  onPlay={() => handlePlayTrack(item)}
                 />
               ))}
             </div>
@@ -219,8 +244,8 @@ const MusicPage: React.FC = () => {
                   key={item.id}
                   media={item}
                   rank={index + 1}
-                  isPlaying={currentPlayingId === item.id}
-                  onPlay={() => setCurrentPlayingId(item.id)}
+                  isPlaying={currentPlayingId === item.id && globalIsPlaying}
+                  onPlay={() => handlePlayTrack(item)}
                 />
               ))}
             </div>
@@ -272,8 +297,8 @@ const MusicPage: React.FC = () => {
                 key={item.id}
                 media={item}
                 rank={index + 1}
-                isPlaying={currentPlayingId === item.id}
-                onPlay={() => setCurrentPlayingId(item.id)}
+                isPlaying={currentPlayingId === item.id && globalIsPlaying}
+                onPlay={() => handlePlayTrack(item)}
               />
             ))}
           </div>
@@ -320,8 +345,8 @@ const MusicPage: React.FC = () => {
                 <MusicListItem
                   key={item.id}
                   media={item}
-                  isPlaying={currentPlayingId === item.id}
-                  onPlay={() => setCurrentPlayingId(item.id)}
+                  isPlaying={currentPlayingId === item.id && globalIsPlaying}
+                  onPlay={() => handlePlayTrack(item)}
                 />
               ))}
             </div>
