@@ -69,7 +69,20 @@ const AudioWaveformPlayer: React.FC<{
   onSeek: (time: number) => void;
 }> = ({ file, feedbacks, onTimeClick, isPlaying, onPlayPause, currentTime, onSeek }) => {
   const duration = file.duration || 180;
-  const waveformData = file.waveformData || Array.from({ length: 50 }, () => Math.random() * 100);
+  // ID 기반 결정적 파형 데이터 생성 (렌더시마다 변경되지 않음)
+  const waveformData = useMemo(() => {
+    if (file.waveformData) return file.waveformData;
+    // ID를 시드로 사용하여 안정적인 파형 생성
+    let seed = 0;
+    for (let i = 0; i < file.id.length; i++) {
+      seed = ((seed << 5) - seed) + file.id.charCodeAt(i);
+      seed = seed & seed;
+    }
+    return Array.from({ length: 50 }, (_, i) => {
+      const x = Math.sin(seed + i * 0.5) * 0.5 + 0.5;
+      return x * 80 + 20; // 20-100 범위
+    });
+  }, [file.id, file.waveformData]);
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);

@@ -48,6 +48,7 @@ const App: React.FC = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
+  const [volume, setVolume] = useState(80);
   const audioRef = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
@@ -130,6 +131,19 @@ const App: React.FC = () => {
     }
   }, []);
 
+  const handleVolumeChange = useCallback((newVolume: number) => {
+    setVolume(newVolume);
+    if (audioRef.current) {
+      audioRef.current.volume = newVolume / 100;
+    }
+  }, []);
+
+  // 초기 볼륨 설정
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = volume / 100;
+    }
+  }, []);
 
   const handleNavigate = useCallback((newPage: Page) => {
     setPage(newPage);
@@ -297,6 +311,8 @@ const App: React.FC = () => {
             onSeek={handleSeek}
             currentTime={currentTime}
             duration={duration}
+            volume={volume}
+            onVolumeChange={handleVolumeChange}
             onClose={() => {
               setCurrentTrack(null);
               setIsPlaying(false);

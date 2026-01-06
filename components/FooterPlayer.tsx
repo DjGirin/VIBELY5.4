@@ -12,6 +12,8 @@ interface FooterPlayerProps {
   currentTime: number;
   duration: number;
   onClose?: () => void;
+  volume?: number;
+  onVolumeChange?: (volume: number) => void;
 }
 
 const formatTime = (timeInSeconds: number) => {
@@ -29,9 +31,14 @@ const FooterPlayer: React.FC<FooterPlayerProps> = ({
   onSeek,
   currentTime,
   duration,
-  onClose
+  onClose,
+  volume: externalVolume,
+  onVolumeChange
 }) => {
-  const [volume, setVolume] = useState(80);
+  // 외부 볼륨 상태가 없으면 내부 상태 사용
+  const [internalVolume, setInternalVolume] = useState(80);
+  const volume = externalVolume ?? internalVolume;
+
   const [isMuted, setIsMuted] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
   const [isRepeat, setIsRepeat] = useState(false);
@@ -41,7 +48,11 @@ const FooterPlayer: React.FC<FooterPlayerProps> = ({
 
   const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newVolume = parseInt(e.target.value);
-    setVolume(newVolume);
+    if (onVolumeChange) {
+      onVolumeChange(newVolume);
+    } else {
+      setInternalVolume(newVolume);
+    }
     if (newVolume === 0) {
       setIsMuted(true);
     } else if (isMuted) {
@@ -50,7 +61,11 @@ const FooterPlayer: React.FC<FooterPlayerProps> = ({
   };
 
   const toggleMute = () => {
-    setIsMuted(!isMuted);
+    const newMuted = !isMuted;
+    setIsMuted(newMuted);
+    if (onVolumeChange) {
+      onVolumeChange(newMuted ? 0 : volume);
+    }
   };
 
   return (

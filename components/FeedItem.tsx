@@ -75,11 +75,21 @@ const FeedItem: React.FC<FeedItemProps> = ({
   
   const [isCommentsVisible, setIsCommentsVisible] = useState(initialPost.comments.length > 0);
 
+  // ID 기반 결정적 파형 데이터 생성 (컴포넌트 재마운트 시에도 일관됨)
   const waveformData = useMemo(() => {
     if (post.media.mediaType !== 'audio') return [];
     const points = (post.media.duration || 180) * 2;
-    return Array.from({ length: points }, () => Math.random() * 0.9 + 0.1);
-  }, [post.media.mediaType, post.media.duration]);
+    // ID를 시드로 사용하여 안정적인 파형 생성
+    let seed = 0;
+    for (let i = 0; i < post.media.id.length; i++) {
+      seed = ((seed << 5) - seed) + post.media.id.charCodeAt(i);
+      seed = seed & seed;
+    }
+    return Array.from({ length: points }, (_, i) => {
+      const x = Math.sin(seed + i * 0.3) * 0.5 + 0.5;
+      return x * 0.8 + 0.1; // 0.1-0.9 범위
+    });
+  }, [post.media.id, post.media.mediaType, post.media.duration]);
 
   const handleLike = useCallback(() => setIsLiked(prev => !prev), []);
 
