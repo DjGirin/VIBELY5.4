@@ -45,23 +45,19 @@ const statusConfig = {
   completed: { label: '완료', color: 'bg-green-500', lightBg: 'bg-green-100', textColor: 'text-green-700' },
 };
 
-// 빠른 액세스 카드
-const QuickAccessCard: React.FC<{
+// 컴팩트 네비게이션 버튼
+const NavButton: React.FC<{
   icon: React.ReactNode;
   label: string;
-  description: string;
   onClick: () => void;
   gradient: string;
-}> = ({ icon, label, description, onClick, gradient }) => (
+}> = ({ icon, label, onClick, gradient }) => (
   <button
     onClick={onClick}
-    className={`${gradient} rounded-xl p-5 text-left text-white hover:opacity-90 transition-opacity shadow-lg group`}
+    className={`${gradient} flex items-center space-x-2 px-4 py-2.5 rounded-full text-white text-sm font-medium whitespace-nowrap hover:opacity-90 active:scale-95 transition-all shadow-md`}
   >
-    <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
-      {icon}
-    </div>
-    <h3 className="font-bold text-lg">{label}</h3>
-    <p className="text-white/80 text-sm mt-1">{description}</p>
+    <span className="w-5 h-5">{icon}</span>
+    <span>{label}</span>
   </button>
 );
 
@@ -223,40 +219,33 @@ const BackstagePage: React.FC<BackstagePageProps> = ({ onNavigate, onNavigateToS
         </div>
       </div>
 
-      {/* 빠른 액세스 */}
-      <section>
-        <h2 className="font-bold text-lg mb-3">빠른 액세스</h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <QuickAccessCard
-            icon={<LayoutDashboardIcon className="w-6 h-6" />}
-            label="대시보드"
-            description="전체 현황 보기"
-            onClick={() => onNavigate('dashboard')}
-            gradient="bg-gradient-to-br from-brand-pink to-brand-purple"
-          />
-          <QuickAccessCard
-            icon={<FolderKanbanIcon className="w-6 h-6" />}
-            label="프로젝트"
-            description="프로젝트 관리"
-            onClick={() => onNavigate('projects')}
-            gradient="bg-gradient-to-br from-purple-500 to-indigo-600"
-          />
-          <QuickAccessCard
-            icon={<UsersIcon className="w-6 h-6" />}
-            label="팀"
-            description="협업 멤버 관리"
-            onClick={() => onNavigate('teams')}
-            gradient="bg-gradient-to-br from-blue-500 to-cyan-500"
-          />
-          <QuickAccessCard
-            icon={<HandshakeIcon className="w-6 h-6" />}
-            label="콜랩"
-            description="협업 프로젝트"
-            onClick={() => onNavigate('openProjects')}
-            gradient="bg-gradient-to-br from-green-500 to-emerald-600"
-          />
-        </div>
-      </section>
+      {/* 네비게이션 버튼 (가로 스크롤) */}
+      <div className="flex space-x-2 overflow-x-auto pb-1 scrollbar-hide">
+        <NavButton
+          icon={<LayoutDashboardIcon className="w-5 h-5" />}
+          label="대시보드"
+          onClick={() => onNavigate('dashboard')}
+          gradient="bg-gradient-to-r from-brand-pink to-brand-purple"
+        />
+        <NavButton
+          icon={<FolderKanbanIcon className="w-5 h-5" />}
+          label="프로젝트"
+          onClick={() => onNavigate('projects')}
+          gradient="bg-gradient-to-r from-purple-500 to-indigo-600"
+        />
+        <NavButton
+          icon={<UsersIcon className="w-5 h-5" />}
+          label="팀"
+          onClick={() => onNavigate('teams')}
+          gradient="bg-gradient-to-r from-blue-500 to-cyan-500"
+        />
+        <NavButton
+          icon={<HandshakeIcon className="w-5 h-5" />}
+          label="콜랩"
+          onClick={() => onNavigate('openProjects')}
+          gradient="bg-gradient-to-r from-green-500 to-emerald-600"
+        />
+      </div>
 
       {/* 최근 프로젝트 */}
       <section>
